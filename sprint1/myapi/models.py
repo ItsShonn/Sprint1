@@ -21,7 +21,7 @@ class PerevalAdded(models.Model):
     beautyTitle = models.CharField()
     title = models.CharField()
     otherTitles = models.CharField()
-    connect = models.CharField()
+    connect = models.CharField(null=True)
     add_time = models.CharField() # IN JSON DATA
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -41,6 +41,7 @@ class PerevalAdded(models.Model):
 
 class Images(models.Model):
     img = models.BinaryField(null=False)
+    title = models.CharField(default='')
 
 
 class PerevalImages(models.Model):
