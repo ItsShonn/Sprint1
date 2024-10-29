@@ -7,6 +7,14 @@ class Coords(models.Model):
     height = models.IntegerField()
 
 
+class User(models.Model):
+    email = models.EmailField(primary_key=True)
+    fam = models.CharField()
+    name = models.CharField()
+    otc = models.CharField()
+    phone = models.CharField()
+
+
 class PerevalAdded(models.Model):
     time_added = models.DateTimeField(auto_now=True) # OF PEREVAL ADDED OBJECT
 
@@ -15,6 +23,7 @@ class PerevalAdded(models.Model):
     otherTitles = models.CharField()
     connect = models.CharField()
     add_time = models.CharField() # IN JSON DATA
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     spring = models.CharField(null=True)
     summer = models.CharField(null=True)
