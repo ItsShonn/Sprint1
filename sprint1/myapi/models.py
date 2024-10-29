@@ -30,7 +30,13 @@ class PerevalAdded(models.Model):
     autumn = models.CharField(null=True)
     winter = models.CharField(null=True)
 
-    coords_id = models.ForeignKey(Coords, on_delete=models.CASCADE())
+    coords_id = models.ForeignKey(Coords, on_delete=models.CASCADE)
+
+    status = models.CharField(choices=(('n', 'new'),
+                                       ('p', 'pending'),
+                                       ('a', 'accepted'),
+                                       ('r', 'rejected')),
+                              default='n')
 
 
 class Images(models.Model):
