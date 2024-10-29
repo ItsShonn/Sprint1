@@ -4,10 +4,10 @@ import json
 
 
 class PerevalSerializer(serializers.Serializer):
-   beautyTitle = serializers.CharField()
+   beauty_title = serializers.CharField()
    title = serializers.CharField()
    other_titles = serializers.CharField()
-   connect = serializers.CharField()
+   connect = serializers.CharField(allow_blank=True)
    add_time = serializers.DateTimeField()
    user = serializers.JSONField()
    coords = serializers.JSONField()
@@ -15,25 +15,18 @@ class PerevalSerializer(serializers.Serializer):
    images = serializers.ListField()
 
    def validate(self, data):
-
        d_user = data['user']
-       d_user = json.loads(d_user)
        d_coords = data['coords']
-       d_coords = json.loads(d_coords)
        d_level = data['level']
-       d_level = json.loads(d_level)
        d_images = data['images']
 
-       for f in d_user.values():
-           if not(f in ['email', 'fam', 'name', 'otc', 'phone']):
+       if set(d_user.keys()) != {'email', 'fam', 'name', 'otc', 'phone'}:
+               raise serializers.ValidationError(f'Not enough fields')
+
+       if set(d_coords.keys()) != {'longitude', 'latitude', 'height'}:
                raise serializers.ValidationError('Not enough fields')
 
-       for f in d_coords.values():
-           if not(f in ['longitude', 'latitude', 'height']):
-               raise serializers.ValidationError('Not enough fields')
-
-       for f in d_level.values():
-           if not(f in ['spring', 'winter', 'autumn', 'summer']):
+       if set(d_level.keys()) != {'spring', 'winter', 'autumn', 'summer'}:
                raise serializers.ValidationError('Not enough fields')
 
        for f in d_images:

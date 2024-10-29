@@ -10,7 +10,7 @@ from .models import *
 class submitData(views.APIView):
 
     def post(self, request, format=None):
-        data = json.loads(request.data)
+        data = request.data
         serializer = PerevalSerializer(data=data)
 
         if serializer.is_valid():
