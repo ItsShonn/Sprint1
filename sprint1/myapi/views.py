@@ -24,8 +24,7 @@ class submitData(views.APIView):
                                                height=int(d.get('coords')['height']))
                 coords.save()
                 objects_.append(coords)
-
-                if not (User.objects.filter(d.get('user')['email']).exists()):
+                if not (User.objects.filter(pk=d.get('user').get('email')).exists()):
                     return Response({"status":500, "message":"Неизвестный пользователь", "id":0})
 
                 pereval_added = PerevalAdded(beautyTitle=d.get('beauty_title'),
@@ -33,28 +32,28 @@ class submitData(views.APIView):
                                              otherTitles=d.get('other_titles'),
                                              connect=d.get('connect'),
                                              add_time=d.get('add_time'),
-                                             user=d.get('user')['email'],
+                                             user=User.objects.get(pk=d.get('user')['email']),
                                              spring=d.get('level')['spring'],
                                              summer=d.get('level')['summer'],
                                              autumn=d.get('level')['autumn'],
                                              winter=d.get('level')['winter'],
-                                             coords_id=coords.id)
+                                             coords_id=coords)
                 pereval_added.save()
                 objects_.append(pereval_added)
 
                 for image in d.get('images'):
-                    img = Images(img=image.get('data'),
+                    img = Images(img=str.encode(image.get('data')),
                                  title=image.get('title'))
                     img.save()
                     objects_.append(img)
 
-                    per_img = PerevalImages(pereval_id=pereval_added.id,
-                                            image_id=img.id)
+                    per_img = PerevalImages(pereval_id=pereval_added,
+                                            image_id=img)
                     per_img.save()
                     objects_.append(per_img)
             except ValidationError as e:
                 for obj in objects_:
                     obj.delete()
-                return Response({"status":400, "message":"Невалидные данные", "id":0})
+                return Response({"status":400, "message":f"Невалидные данные: {e}", "id":0})
             return Response({"status":200, "message":0, "id":pereval_added.id})
         return Response({"status":400, "message":"Невалидный запрос", "id":0})

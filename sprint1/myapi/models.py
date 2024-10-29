@@ -24,15 +24,15 @@ class PerevalAdded(models.Model):
 
     beautyTitle = models.CharField()
     title = models.CharField()
-    otherTitles = models.CharField()
-    connect = models.CharField(null=True)
+    otherTitles = models.CharField(null=True, blank=True)
+    connect = models.CharField(null=True, blank=True)
     add_time = models.CharField() # IN JSON DATA
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    spring = models.CharField(null=True)
-    summer = models.CharField(null=True)
-    autumn = models.CharField(null=True)
-    winter = models.CharField(null=True)
+    spring = models.CharField(null=True, blank=True)
+    summer = models.CharField(null=True, blank=True)
+    autumn = models.CharField(null=True, blank=True)
+    winter = models.CharField(null=True, blank=True)
 
     coords_id = models.ForeignKey(Coords, on_delete=models.CASCADE)
 
@@ -48,7 +48,7 @@ class PerevalAdded(models.Model):
 
 
 class Images(models.Model):
-    img = models.BinaryField(null=False)
+    img = models.BinaryField(default=False, editable=True, null=False)
     title = models.CharField(default='')
 
     def save(self, *args, **kwargs):
