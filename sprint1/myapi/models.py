@@ -49,3 +49,10 @@ class PerevalImages(models.Model):
     image_id = models.ForeignKey(Images, on_delete=models.CASCADE)
 
 
+class PerevalAreas(models.Model):
+    id_parent = models.ForeignKey(PerevalAdded, on_delete=models.CASCADE)
+    title = models.CharField(null=True)
+
+
+class SprActivitiesTypes(models.Model):
+    title = models.CharField(null=True)
