@@ -6,6 +6,10 @@ class Coords(models.Model):
     longitude = models.FloatField()
     height = models.IntegerField()
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
 
 class User(models.Model):
     email = models.EmailField(primary_key=True)
@@ -38,16 +42,28 @@ class PerevalAdded(models.Model):
                                        ('r', 'rejected')),
                               default='n')
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
 
 class Images(models.Model):
     img = models.BinaryField(null=False)
     title = models.CharField(default='')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
 
 class PerevalImages(models.Model):
     date_added = models.DateTimeField(auto_now=True)
     pereval_id = models.ForeignKey(PerevalAdded, on_delete=models.CASCADE)
     image_id = models.ForeignKey(Images, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
 
 class PerevalAreas(models.Model):
