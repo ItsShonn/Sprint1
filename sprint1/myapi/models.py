@@ -40,7 +40,7 @@ class PerevalAdded(models.Model):
 
 
 class Images(models.Model):
-    img = models.BinaryField(Null=False)
+    img = models.BinaryField(null=False)
 
 
 class PerevalImages(models.Model):
