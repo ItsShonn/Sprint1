@@ -9,7 +9,7 @@ from .serializers import *
 from .models import *
 
 
-class submitData(views.APIView):
+class submitDataPOST(views.APIView):
 
     def post(self, request, format=None):
         data = request.data
@@ -59,7 +59,8 @@ class submitData(views.APIView):
         return Response({"status":400, "message":"Невалидный запрос", "id":0})
 
 
-    def get(self, request, format=None):
-        pk = request.query_params.get("id")
+class submitDataGET(views.APIView):
 
+    def get(self, request, format=None, **kwargs):
+        pk = kwargs.get('pk')
         return Response({"result":f"{pk}"})
