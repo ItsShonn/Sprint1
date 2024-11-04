@@ -57,3 +57,9 @@ class submitData(views.APIView):
                 return Response({"status":400, "message":f"Невалидные данные: {e}", "id":0})
             return Response({"status":200, "message":0, "id":pereval_added.id})
         return Response({"status":400, "message":"Невалидный запрос", "id":0})
+
+
+    def get(self, request, format=None):
+        pk = request.query_params.get("id")
+
+        return Response({"result":f"{pk}"})
