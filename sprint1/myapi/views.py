@@ -62,5 +62,30 @@ class submitDataPOST(views.APIView):
 class submitDataGET(views.APIView):
 
     def get(self, request, format=None, **kwargs):
-        pk = kwargs.get('pk')
-        return Response({"result":f"{pk}"})
+        try:
+            pk = kwargs.get('pk')
+            pereval = PerevalAdded.objects.filter(pk=pk)
+            if not(pereval.exists()) == True:
+                return Response({"status":400, "message":"Объекта нет в базе данных", "id":0})
+            pereval = pereval.first()
+            coords = pereval.coords_id
+
+            return Response({
+                "status":200,
+                "object":{"id": f"{pereval.id}",
+                 "time_added": f"{pereval.time_added}",
+                 "beautyTitle": f"{pereval.beautyTitle}",
+                 "otherTitles": f"{pereval.otherTitles}",
+                 "connect": f"{pereval.connect}",
+                 "add_time": f"{pereval.add_time}",
+                 "spring": f"{pereval.spring}",
+                 "summer": f"{pereval.summer}",
+                 "autumn": f"{pereval.autumn}",
+                 "winter": f"{pereval.winter}",
+                 "latitude": f"{coords.latitude}",
+                 "longitude": f"{coords.longitude}",
+                 "height": f"{coords.height}",
+                 "user": f"{pereval.user.email}", }
+            })
+        except Exception as e:
+            return Response({"status":500, "message":f"Ошибка {e}", "id":0})
