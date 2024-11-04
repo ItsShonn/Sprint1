@@ -161,3 +161,37 @@ class submitDataGET(views.APIView):
             except Exception:
                 for obj in objects_:
                     obj.delete()
+
+
+class submitDataEMAILGET(views.APIView):
+
+    def get(self, request, format=None):
+        email = request.query_params.get('user_email')
+        user = User.objects.filter(email=email)
+        if not user.exists():
+            return Response({"state":0, "message":"Пользователя с такой почтой не существует", "result":None})
+        perevals = PerevalAdded.objects.filter(user=user.first())
+        res = []
+
+        for pereval in perevals:
+            coords = pereval.coords_id
+
+            res.append({
+                "status": 200,
+                "object": {"id": f"{pereval.id}",
+                           "time_added": f"{pereval.time_added}",
+                           "beautyTitle": f"{pereval.beautyTitle}",
+                           "otherTitles": f"{pereval.otherTitles}",
+                           "connect": f"{pereval.connect}",
+                           "add_time": f"{pereval.add_time}",
+                           "spring": f"{pereval.spring}",
+                           "summer": f"{pereval.summer}",
+                           "autumn": f"{pereval.autumn}",
+                           "winter": f"{pereval.winter}",
+                           "latitude": f"{coords.latitude}",
+                           "longitude": f"{coords.longitude}",
+                           "height": f"{coords.height}",
+                           "user": f"{pereval.user.email}", }
+            })
+
+        return Response({"state":1, "message":None, "result": res})
