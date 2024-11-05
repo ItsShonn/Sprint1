@@ -1,0 +1,204 @@
+openapi: 3.0.2
+info:
+  title: FSTRAPI
+  version: 1.0.0
+  description: API for FSTR app
+paths:
+  /submitData/{id}:
+    get:
+      operationId: submitDataGET
+      description: 'Get PerevalAdded object info by id'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: 'PerevalAdded object id'
+        consumes: application/json
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pereval'
+          description: ''
+      tags:
+      - submitData
+    patch:
+      operationId: submitDataPATCH
+      description: 'Patch PerevalAdded, Coords, Images objects info'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: 'PerevalAdded object id'
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JSONRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JSONResponse'
+          description: ''
+      tags:
+      - submitData
+  /submitData/?user_email={email}:
+    get:
+      operationId: listsubmitDataEMAILGETs
+      description: ''
+      parameters:
+      - name: email
+        in: path
+        required: true
+        description: 'User Email pk'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerevalArray'
+          description: ''
+      tags:
+      - submitData
+  /submitData:
+    post:
+      operationId: submitDataPOST
+      description: 'Create PerevalAdded, Coords, Images objects'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JSONRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JSONStatusResponse'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JSONStatusResponse'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JSONStatusResponse'
+          description: ''
+      tags:
+      - submitData
+components:
+  schemas:
+    JSONStatusResponse:
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+          description: 'Message of Error'
+        id:
+          type: integer
+          format: int32
+    JSONResponse:
+      properties:
+        state:
+          type: integer
+          format: int32
+        message:
+          type: string
+          description: 'Message of Error'
+    PerevalArray:
+      properties:
+        state:
+          type: integer
+          format: int32
+        message:
+          type: string
+          description: 'Message of Error'
+        result:
+          type: array
+    JSONRequest:
+      required:
+        - beautyTitle
+        - title
+        - otherTitles
+        - connect
+        - add_time
+        - user
+        - coords
+        - level
+        - images
+      properties:
+        beautyTitle:
+          type: string
+        title:
+          type: string
+        otherTitles:
+          type: string
+        connect:
+          type: string
+        add_time:
+          type: string
+        user:
+          $ref: '#components/objects/User'
+        coords:
+          $ref: '#components/objects/coords'
+        level:
+          $ref: '#components/objects/level'
+        images:
+          type: array
+          items:
+            $ref: '#components/objects/Image'
+  objects:
+    User:
+      properties:
+        email:
+          type: string
+        fam:
+          type: string
+        nam:
+          type: string
+        otc:
+          type: string
+        phone:
+          type: string
+    coords:
+      properties:
+        latitude:
+          type: number
+          format: float
+        longitude:
+          type: number
+          format: float
+        height:
+          type: integer
+          format: int32
+    level:
+      properties:
+        winter:
+          type: string
+        summer:
+          type: string
+        autumn:
+          type: string
+        spring:
+          type: string
+    Image:
+      properties:
+        data:
+          type: string
+          format: byte
+        title:
+          type: string
